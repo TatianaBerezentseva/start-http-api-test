@@ -1,4 +1,5 @@
 # Logs
+allure-results
 logs
 *.log
 npm-debug.log*
