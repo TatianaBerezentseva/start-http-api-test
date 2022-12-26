@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`user POST /api/v1/login Авторизация должна возвращать статус с кодом 412 ошибки если логин неверный 1`] = `
-Object {
-  "code": 1011,
-  "message": "Wrong username or password.",
-}
-`;
