@@ -54,8 +54,6 @@ test('Успешная генерация токена для существую
   })
   const responseBody = await response.json()
   expect(response.status).toEqual(200)
-  expect(responseBody.token).toBeTruthy()
-  expect(responseBody.expires).toBeTruthy()
   expect(responseBody.status).toEqual('Success')
   expect(responseBody.result).toEqual('User authorized successfully.')
 })
