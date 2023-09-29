@@ -80,7 +80,7 @@ describe("Account", () => {
   });
 
   describe("POST /Account/v1/User", () => {
-    const randomName = faker.lorem.word(); //???
+    const randomName = faker.lorem.word();
     const randomPassword = `1@Q+${faker.lorem.word()}`;
 
     test("Успешное создание юзера", async () => {
@@ -113,7 +113,7 @@ describe("Account", () => {
       const res = await client
         .delete(`/Account/v1/User/{?}`)
         .set("Content-Type", "application/json")
-        .set("authorization", `Bearer ${token}`) //поч осталось
+        .set("authorization", `Bearer ${token}`)
         .send();
       expect(res.status).toEqual(200);
     });
