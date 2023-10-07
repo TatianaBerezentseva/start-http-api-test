@@ -18,5 +18,8 @@
     "node-fetch": "^3.2.9",
     "supertest": "^6.2.4"
   },
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@faker-js/faker": "^8.1.0"
+  }
 }
