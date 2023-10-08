@@ -1,6 +1,6 @@
 import supertest from "supertest";
-import config from "../framework/config/config";
-import user from "../framework/services/user";
+import config from "../../framework/config/config";
+import user from "../../framework/services/user";
 
 describe('User', () => {
     describe('GET /Account/v1/User/{UUID}', () => {

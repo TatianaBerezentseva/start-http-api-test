@@ -1,0 +1,29 @@
+import supertest from "supertest";
+
+import config from "../config/config";
+const { faker } = require('@faker-js/faker');
+const { url } = config
+
+// контроллер user
+const book = {
+    // Функция авторизации
+    get: (isbn) => {
+        return supertest(url)
+            .get(`/BookStore/v1/Book?ISBN=${isbn}`)
+            .set('Accept', 'application/json')
+            .send()
+    },
+
+    delete: (payload) => {
+        return supertest(url)
+            .delete(`/BookStore/v1/Book`)
+            .set('Accept', 'application/json')
+            .send(payload)
+    },
+
+    randomISBN() {
+        return faker.commerce.isbn({ variant : 13, separator:""});
+    }
+}
+
+export default book

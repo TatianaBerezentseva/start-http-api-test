@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config jest.local.js --testTimeout=50000"
+    "test": "jest --config jest.local.js --testTimeout=50000",
+    "test:book": "jest --testMatch=\"**/specs/book/*.spec.js\" --config jest.local.js --testTimeout=50000",
+    "test:books": "jest --testMatch=\"**/specs/books/*.spec.js\" --config jest.local.js --testTimeout=50000",
+    "test:user": "jest --testMatch=\"**/specs/user/*.spec.js\" --config jest.local.js --testTimeout=50000"
   },
   "author": "",
   "license": "ISC",

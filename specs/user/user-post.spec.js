@@ -1,6 +1,6 @@
 import supertest from "supertest";
-import config from "../framework/config/config";
-import user from "../framework/services/user";
+import config from "../../framework/config/config";
+import user from "../../framework/services/user";
 
 describe('User', () => {
   describe('POST /Account/v1/User', () => {
@@ -27,8 +27,6 @@ describe('User', () => {
       await user.create(payload)
 
       const res = await user.create(payload)
-
-      console.log(res.body)
 
       expect(res.status).toEqual(406);
       expect(res.body.code).toEqual('1204')

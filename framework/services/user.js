@@ -2,7 +2,7 @@ import supertest from "supertest";
 
 import config from "../config/config";
 const { faker } = require('@faker-js/faker');
-const {url} = config
+const { url } = config
 
 // контроллер user
 const user = {
