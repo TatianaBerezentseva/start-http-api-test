@@ -1,6 +1,5 @@
 import supertest from "supertest";
 import config from "../../framework/config/config";
-import book from "../../framework/services/book";
 
 describe('Book', () => {
     describe('POST /BookStore/v1/Book', () => {
