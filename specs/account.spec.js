@@ -14,30 +14,20 @@ describe("Account", () => {
 
   describe("GET /Account/v1/User/{uuid}", () => {
     test("Успешный запрос информации о пользователе", async () => {
-      const res = await client
-        .get(`/Account/v1/User/${config.uuid}`)
-        .set("Content-Type", "application/json")
-        .set("authorization", `Bearer ${token}`)
-        .send();
+      const res = await user.getUserInfo(config.uuid, token)
       expect(res.status).toEqual(200);
     });
   });
 
   describe("POST /Account/v1/Authorized", () => {
     test("Авторизация должна проходить успешно с правильным логином и паролем", async () => {
-      const res = await client
-        .post("/Account/v1/Authorized")
-        .set("Content-Type", "application/json")
-        .send(config.credentials);
+      const res = await user.autorizationCheck(config.credentials)
       expect(res.status).toEqual(200);
       expect(res.body).toEqual(true);
     });
 
     test("Авторизация должна возвращать статус с кодом ошибки если логин неверный", async () => {
-      const res = await client
-        .post("/Account/v1/Authorized")
-        .set("Content-Type", "application/json")
-        .send({
+      const res = await user.autorizationCheck({
           userName: "tinkoty",
           password: `${config.credentials.password}`,
         });
@@ -45,10 +35,7 @@ describe("Account", () => {
     });
 
     test("Авторизация должна возвращать статус с кодом ошибки если пароль неверный", async () => {
-      const res = await client
-        .post("/Account/v1/Authorized")
-        .set("Content-Type", "application/json")
-        .send({
+      const res = await user.autorizationCheck({
           userName: `${config.credentials.userName}`,
           password: "Tinkotya19071997",
         });
@@ -57,24 +44,15 @@ describe("Account", () => {
   });
 
   describe("POST /Account/v1/GenerateToken", () => {
-    test("Возвращает ошибку если передали неверные лог/пасс", async () => {
-      const res = await client
-        .post(`/Account/v1/GenerateToken`)
-        .set("Content-Type", "application/json")
-        .send({
-          userName: "userName",
-          password: "password",
-        });
+    test("Возвращает ошибку, если передали неверные лог/пасс", async () => {
+      const res = await user.generateToken(config.credentialsFalse);
       expect(res.status).toEqual(200);
       expect(res.body.token).toEqual(null);
       expect(res.body.result).toEqual("User authorization failed.");
     });
 
     test("Генерация токена успешно", async () => {
-      const res = await client
-        .post(`/Account/v1/GenerateToken`)
-        .set("Content-Type", "application/json")
-        .send(config.credentials);
+      const res = await user.generateToken(config.credentials);
       expect(res.status).toEqual(200);
     });
   });
@@ -84,10 +62,7 @@ describe("Account", () => {
     const randomPassword = `1@Q+${faker.lorem.word()}`;
 
     test("Успешное создание юзера", async () => {
-      const res = await client
-        .post("/Account/v1/User/")
-        .set("Content-Type", "application/json")
-        .send({
+      const res = await user.userRegistration({
           userName: randomName,
           password: randomPassword,
         });
@@ -96,10 +71,7 @@ describe("Account", () => {
     });
 
     test("Нельзя создать дубликат юзера", async () => {
-      const res = await client
-        .post("/Account/v1/User/")
-        .set("Content-Type", "application/json")
-        .send({
+      const res = await user.userRegistration({
           userName: randomName,
           password: randomPassword,
         });
@@ -109,21 +81,21 @@ describe("Account", () => {
   });
 
   describe("DELETE /Account/v1/User", () => {
-    test("ошибка в ответ на ввод спецсимволов", async () => {
-      const res = await client
-        .delete(`/Account/v1/User/{?}`)
-        .set("Content-Type", "application/json")
-        .set("authorization", `Bearer ${token}`)
-        .send();
-      expect(res.status).toEqual(200);
+    test("Нельзя удалить пользователя без авторизации", async () => {
+      const res = await user.deleteUser(userId = config.uuid);
+      expect(res.status).toEqual(401);
+      expect(response.body).toEqual({code: '1200', message: 'User not authorized!'});
     });
 
-    test("Нельзя удалить пользователя без авторизации", async () => {
-      const res = await client
-        .delete(`/Account/V1/User/${config.uuid}`)
-        .set("Content-Type", "application/json")
-        .send();
-      expect(res.status).toEqual(401);
-    });
+    test('Нельзя удалить пользователя с неверным UUID', async () => {
+      const res = await user.deleteUser();
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({code: '1207', message: 'User Id not correct!'});
+  });
+
+    test('Успешное удаление пользователя', async () => {
+      const res = await user.deleteUser();
+      expect(response.status).toEqual(204);
+  });
   });
  })

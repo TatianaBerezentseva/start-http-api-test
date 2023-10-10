@@ -4,34 +4,51 @@ import config from "../config";
 const { url } = config;
 
 const user = {
-  login: (payload) => {
+  
+  userRegistration: (payload=config.credentials) => {
     return supertest(url)
-      .post("/Account/v1/GenerateToken")
+      .post("/Account/v1/User")
       .set("Accept", "application/json")
       .set("Content-Type", "application/json")
       .send(payload);
   },
 
-  async getAuthToken() {
-    const payload = config.credentials;
-    const res = await this.login(payload);
-    return res.body.token;
+  autorizationCheck: (payload=config.credentials) => {
+    return supertest(url)
+    .post("/Account/v1/Authorized")
+    .set("Accept", "application/json")
+    .set("Content-Type", "application/json")
+    .send(payload);
   },
 
-  async deleteUser(userId) {
+  generateToken: (payload=config.credentials) => {
+    return supertest(url)
+    .post("/Account/v1/GenerateToken")
+    .set("Accept", "application/json")
+    .set("Content-Type", "application/json")
+    .send(payload);
+  },
+
+  deleteUser: (userId, token) => {
     return supertest(url)
       .delete(`/Account/v1/User/${userId}`)
       .set("Accept", "application/json")
-      .set("Content-Type", "application/json")
+      .set("authorization", `Bearer ${token}`)
       .send();
   },
 
-  async getUserInfo(userId) {
+  getUserInfo: (userId, token) => {
     return supertest(url)
     .get(`/Account/v1/User/${userId}`)
     .set("Accept", "application/json")
-    .set("Content-Type", "application/json")
+    .set("authorization", `Bearer ${token}`)
     .send();
+  },
+
+  async getAuthToken() {
+    const response = await this.generateToken()
+    const token = response.body.token 
+    return token
   }
 };
 
