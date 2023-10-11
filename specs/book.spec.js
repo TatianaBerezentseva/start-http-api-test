@@ -125,7 +125,7 @@ describe("BOOKS", () => {
       expect(res.body).toEqual(booksConstants.bookErrorMessage);
     });
   });
-  
+
   describe("DELETE /BookStore/v1/Book", () => {
     test("Успешное удаление книги", async () => {
       const res = await book.deleteBook({
@@ -136,13 +136,13 @@ describe("BOOKS", () => {
       expect(res.body).toEqual({});
     });
 
-    test("Нет ошибки при попытке удалить книгу, которой нет в библиотеке юзера", async () => {
+    test("Ошибка при попытке удалить книгу, которой нет в библиотеке юзера", async () => {
       const res = await book.deleteBook({
           isbn: booksConstants.fakeIsbn,
           userId: config.uuid,
         });
-      expect(res.status).toEqual(204);
-      expect(res.body).toEqual({});
+      expect(res.status).toEqual(400);
+      expect(response.body).toEqual({code: '1206', message: "ISBN supplied is not available in User's Collection!"});
     });
   });
 });
