@@ -9,7 +9,6 @@ const user = {
     return supertest(url)
       .post("/Account/v1/User")
       .set("Accept", "application/json")
-      .set("Content-Type", "application/json")
       .send(payload);
   },
 
@@ -17,7 +16,6 @@ const user = {
     return supertest(url)
     .post("/Account/v1/Authorized")
     .set("Accept", "application/json")
-    .set("Content-Type", "application/json")
     .send(payload);
   },
 
@@ -25,7 +23,6 @@ const user = {
     return supertest(url)
     .post("/Account/v1/GenerateToken")
     .set("Accept", "application/json")
-    .set("Content-Type", "application/json")
     .send(payload);
   },
 
