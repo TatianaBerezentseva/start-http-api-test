@@ -21,23 +21,27 @@ const book = {
       .send();
     },
 
-    addBook: () => {
+    addBook: (payload, token) => {
     return supertest(url)
         .post('/BookStore/v1/Books')
         .set('Accept', 'application/json')
         .set('Authorization', `Bearer ${token}`)
-        .send({userId: `${userId}`, collectionOfIsbns: [{isbn: `${isbn}`}]});
+        .send(payload);
+        //{userId: `${userId}`, collectionOfIsbns: [{isbn: `${isbn}`}]}
     },
 
-    putBook: () => {
+    putBook: (firstBook, userId, isbn, token) => {
     return supertest(url)
-        .put(`/BookStore/v1/Books/${booksConstants.firstBook.isbn}`)
+        .put(`/BookStore/v1/Books/${firstBook}`)
         .set("Accept", "application/json")
         .set('Authorization', `Bearer ${token}`)
-        .send();
+        .send({
+            userId: `${userId}`,
+            isbn: `${isbn}`,
+          });
     },
 
-    deleteBook: () => {
+    deleteBook: (token) => {
     return supertest(url)
       .delete(`/BookStore/v1/Book`)
       .set("Accept", "application/json")

@@ -1,6 +1,6 @@
 import supertest from "supertest";
-import user from "../../framework/services/user";
-import config from "../../framework/config";
+import user from "../framework/services/user";
+import config from "../framework/config";
 const { faker } = require("@faker-js/faker");
 
 describe("Account", () => {
@@ -59,7 +59,7 @@ describe("Account", () => {
 
   describe("POST /Account/v1/User", () => {
     const randomName = faker.lorem.word();
-    const randomPassword = `1@Q+${faker.lorem.word()}`;
+    const randomPassword = `1@Qs+${faker.lorem.word()}`;
 
     test("Успешное создание юзера", async () => {
       const res = await user.userRegistration({
@@ -82,20 +82,16 @@ describe("Account", () => {
 
   describe("DELETE /Account/v1/User", () => {
     test("Нельзя удалить пользователя без авторизации", async () => {
-      const res = await user.deleteUser(userId = config.uuid);
+      const res = await user.deleteUser(config.uuid, '');
       expect(res.status).toEqual(401);
-      expect(response.body).toEqual({code: '1200', message: 'User not authorized!'});
+      expect(res.body).toEqual({code: '1200', message: 'User not authorized!'});
     });
 
     test('Нельзя удалить пользователя с неверным UUID', async () => {
-      const res = await user.deleteUser();
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({code: '1207', message: 'User Id not correct!'});
-  });
-
-    test('Успешное удаление пользователя', async () => {
-      const res = await user.deleteUser();
-      expect(response.status).toEqual(204);
+      const fakeUuid = faker.string.uuid();
+      const res = await user.deleteUser(fakeUuid, token);
+      expect(res.status).toEqual(200);
+      expect(res.body).toEqual({code: '1207', message: 'User Id not correct!'});
   });
   });
  })

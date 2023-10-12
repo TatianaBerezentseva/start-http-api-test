@@ -1,9 +1,8 @@
 import supertest from "supertest";
-import user from "../../framework/services/user";
-import config from "../../framework/config";
+import user from "../framework/services/user" ;
+import config from "../framework/config";
 import book from "../framework/services/book";
 import booksConstants from "../framework/constants";
-const { faker } = require("@faker-js/faker");
 
 describe("BOOKS", () => {
   let client;
@@ -18,12 +17,13 @@ describe("BOOKS", () => {
       const res = await book.addBook({
           userId: config.uuid,
           collectionOfIsbns: [
-            {
-              userId: config.uuid,  
+            { 
               isbn: booksConstants.firstBook.isbn,
             },
           ],
-        });
+        },
+        token
+        );
       expect(res.status).toEqual(201);
       expect(res.body.books).not.toBeNull();
     });
@@ -75,10 +75,11 @@ describe("BOOKS", () => {
   describe("PUT", () => {
 
     test("успешное редактирование книги", async () => {
-      const res = await book.putBook({
-          userId: `${config.uuid}`,
-          isbn: `${booksConstants.secondBook.isbn}`,
-        });
+      const res = await book.putBook(
+        booksConstants.firstBook.isbn,
+        config.uuid,
+        booksConstants.secondBook.isbn,
+        token);
       expect(res.status).toEqual(200);
     });
 
