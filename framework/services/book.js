@@ -10,7 +10,6 @@ const book = {
     return supertest(url)
       .get("/BookStore/v1/Book")
       .set("Accept", "application/json")
-
       .send();
     },
 
@@ -27,7 +26,6 @@ const book = {
         .set('Accept', 'application/json')
         .set('Authorization', `Bearer ${token}`)
         .send(payload);
-        //{userId: `${userId}`, collectionOfIsbns: [{isbn: `${isbn}`}]}
     },
 
     putBook: (firstBook, userId, isbn, token) => {
